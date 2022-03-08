@@ -94,8 +94,14 @@ popd
 pushd package/lean/default-settings/files
 sed -i '/http/d' zzz-default-settings
 export orig_version="$(cat "zzz-default-settings" | grep DISTRIB_REVISION= | awk -F "'" '{print $2}')"
-sed -i "s/${orig_version}/${orig_version} ($(date +"%Y-%m-%d"))/g" zzz-default-settings
+sed -i "s/${orig_version}/${orig_version} (Way Build $(date +"%Y-%m-%d"))/g" zzz-default-settings
 popd
+
+# Modify system hostname（FROM OpenWrt CHANGE TO OpenWrt-N1）
+sed -i 's/OpenWrt/Way/g' package/base-files/files/bin/config_generate
+
+# Set DISTRIB_REVISION
+#sed -i "s/OpenWrt /Way Build $(TZ=UTC-8 date "+%Y.%m.%d") @ OpenWrt /g" package/lean/default-settings/files/zzz-default-settings
 
 # Use Lienol's https-dns-proxy package
 pushd feeds/packages/net
